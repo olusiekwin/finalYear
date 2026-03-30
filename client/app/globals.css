@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f9f4ec;
+  --foreground: #28231d;
+  --brand-deep: #2f4b45;
+  --brand-ink: #2b332e;
+  --brand-accent: #c56c4a;
+  --brand-soft: #f2dfcc;
+  --brand-card: #fffcf7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Manrope", "Segoe UI", sans-serif;
+  --font-mono: "Consolas", "Courier New", monospace;
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  position: relative;
+}
+
+::selection {
+  background: rgba(197, 108, 74, 0.25);
+  color: #2f2a25;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(47, 75, 69, 0.65);
+  outline-offset: 2px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 90% 8%,
+      rgba(197, 108, 74, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(circle at 12% 88%, rgba(47, 75, 69, 0.14), transparent 32%),
+    linear-gradient(180deg, #fdf8f2 0%, #f7f0e6 100%);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: "Cormorant Garamond", "Times New Roman", serif;
+  letter-spacing: 0.01em;
+}
+
+.nsc-glass {
+  background: rgba(255, 252, 247, 0.78);
+  border: 1px solid rgba(197, 108, 74, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.nsc-fade-up {
+  animation: nscFadeUp 0.7s ease-out both;
+}
+
+.nsc-reveal {
+  animation: nscFadeUp 0.7s ease-out both;
+}
+
+.nsc-float {
+  animation: nscFloat 5s ease-in-out infinite;
+}
+
+.nsc-stagger > * {
+  opacity: 0;
+  animation: nscFadeUp 0.65s ease-out both;
+}
+
+.nsc-stagger > :nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.nsc-stagger > :nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.nsc-stagger > :nth-child(3) {
+  animation-delay: 0.19s;
+}
+
+.nsc-stagger > :nth-child(4) {
+  animation-delay: 0.26s;
+}
+
+.nsc-stagger > :nth-child(5) {
+  animation-delay: 0.33s;
+}
+
+.nsc-stagger > :nth-child(6) {
+  animation-delay: 0.4s;
+}
+
+@keyframes nscFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nscFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nsc-fade-up,
+  .nsc-reveal,
+  .nsc-float,
+  .nsc-stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
