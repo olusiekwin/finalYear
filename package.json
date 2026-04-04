@@ -1,0 +1,10 @@
+{
+  "name": "finalyear",
+  "private": true,
+  "workspaces": ["client"],
+  "scripts": {
+    "build": "npm run build -w client",
+    "dev": "npm run dev -w client",
+    "lint": "npm run lint -w client"
+  }
+}
