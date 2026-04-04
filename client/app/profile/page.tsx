@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motionFadeUp } from "@/lib/tailwind-patterns";
+import { apiUrl } from "@/lib/api";
 
 interface UserProfile {
   _id: string;
@@ -38,7 +40,7 @@ export default function ProfilePage() {
 
   const fetchProfile = async (token: string) => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/profile", {
+      const response = await fetch(apiUrl("/users/profile"), {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -77,7 +79,7 @@ export default function ProfilePage() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/profile", {
+      const response = await fetch(apiUrl("/users/profile"), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -102,8 +104,8 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#c56c4a]/30 border-t-[#2f4b45]" />
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#5a9b8a]/35 border-t-[#2a4540]" />
       </div>
     );
   }
@@ -111,42 +113,46 @@ export default function ProfilePage() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <section className="nsc-reveal mb-8 rounded-[2rem] border border-[#c56c4a]/25 bg-[#fff6ec] p-8 sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#9a6c56]">
+        <section
+          className={`mb-8 rounded-sm border border-[#2a4540]/12 bg-white p-8 shadow-sm sm:p-10 ${motionFadeUp}`}
+        >
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#356b5f]">
             Profile
           </p>
-          <h1 className="mt-2 font-display text-5xl font-semibold text-[#253b35]">
-            My Account
+          <h1 className="mt-2 font-display text-4xl font-semibold text-[#1a2e2a] sm:text-5xl">
+            My account
           </h1>
-          <p className="mt-2 text-sm text-[#62564e]">
+          <p className="mt-2 text-sm text-[#5e5148]">
             Manage identity, contact details, and account information.
           </p>
         </section>
 
         {error && (
-          <div className="mb-5 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+          <div className="mb-5 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-5 rounded-xl border border-green-300 bg-green-50 p-3 text-sm text-green-700">
+          <div className="mb-5 rounded-sm border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
             {success}
           </div>
         )}
 
         {profile && (
-          <section className="nsc-reveal nsc-glass rounded-3xl p-8 sm:p-10">
-            <div className="mb-8 flex flex-col gap-5 border-b border-[#c56c4a]/20 pb-8 sm:flex-row sm:items-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#c56c4a] to-[#8f4f35] text-3xl font-bold text-white">
+          <section
+            className={`rounded-sm border border-[#2a4540]/10 bg-white p-8 shadow-sm sm:p-10 ${motionFadeUp}`}
+          >
+            <div className="mb-8 flex flex-col gap-5 border-b border-slate-200/90 pb-8 sm:flex-row sm:items-center">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-sm bg-gradient-to-br from-[#4d7c70] to-[#2a4540] text-3xl font-semibold text-white">
                 {profile.first_name[0]}
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-[#2d433d]">
+                <h2 className="text-2xl font-semibold text-[#1a2e2a]">
                   {profile.first_name} {profile.last_name}
                 </h2>
-                <p className="text-sm text-[#665b53]">{profile.email}</p>
-                <p className="text-xs text-[#86756a]">
+                <p className="text-sm text-[#5e5148]">{profile.email}</p>
+                <p className="mt-1 text-xs text-[#6b7a76]">
                   Member since{" "}
                   {new Date(profile.created_at).toLocaleDateString()}
                 </p>
@@ -155,33 +161,34 @@ export default function ProfilePage() {
 
             {!isEditing ? (
               <div className="space-y-5">
-                <Field label="First Name" value={profile.first_name} />
-                <Field label="Last Name" value={profile.last_name} />
+                <Field label="First name" value={profile.first_name} />
+                <Field label="Last name" value={profile.last_name} />
                 <Field label="Email" value={profile.email} />
                 <Field
-                  label="Phone Number"
+                  label="Phone number"
                   value={profile.phone_number || "Not provided"}
                 />
                 <Field label="Role" value={profile.role} />
 
                 <button
+                  type="button"
                   onClick={() => setIsEditing(true)}
-                  className="mt-2 w-full rounded-full bg-[#c56c4a] px-6 py-3 text-sm font-bold uppercase tracking-wider text-white"
+                  className="mt-2 w-full rounded-sm bg-[#2a4540] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-[#1f3330]"
                 >
-                  Edit Profile
+                  Edit profile
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Input
-                    label="First Name"
+                    label="First name"
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleChange}
                   />
                   <Input
-                    label="Last Name"
+                    label="Last name"
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
@@ -189,7 +196,7 @@ export default function ProfilePage() {
                 </div>
 
                 <Input
-                  label="Phone Number"
+                  label="Phone number"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
@@ -198,14 +205,14 @@ export default function ProfilePage() {
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <button
                     type="submit"
-                    className="flex-1 rounded-full bg-[#c56c4a] px-6 py-3 text-sm font-bold uppercase tracking-wider text-white"
+                    className="flex-1 rounded-sm bg-[#2a4540] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-[#1f3330]"
                   >
-                    Save Changes
+                    Save changes
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    className="flex-1 rounded-full border border-[#2f4b45] px-6 py-3 text-sm font-bold uppercase tracking-wider text-[#2f4b45]"
+                    className="flex-1 rounded-sm border border-[#2a4540]/25 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-[#2a4540] transition hover:bg-[#f8fcfb]"
                   >
                     Cancel
                   </button>
@@ -222,10 +229,10 @@ export default function ProfilePage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-[#8b776a]">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-[#6b7a76]">
         {label}
       </p>
-      <p className="mt-1 text-lg font-semibold text-[#2d433d]">{value}</p>
+      <p className="mt-1 text-lg font-semibold text-[#1a2e2a]">{value}</p>
     </div>
   );
 }
@@ -243,7 +250,7 @@ function Input({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-[#354941]">
+      <label className="mb-2 block text-sm font-semibold text-[#1a2e2a]">
         {label}
       </label>
       <input
@@ -251,7 +258,7 @@ function Input({
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full rounded-xl border border-[#c8b6a6] bg-white px-4 py-3 text-[#2d2a26] outline-none transition focus:border-[#2f4b45]"
+        className="w-full rounded-sm border border-slate-200 bg-[#fafafa] px-4 py-3 text-[#1a2e2a] outline-none transition focus:border-[#2f4b45]/45 focus:ring-2 focus:ring-[#2f4b45]/12"
       />
     </div>
   );

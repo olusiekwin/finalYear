@@ -10,7 +10,9 @@ const MONGODB_URI =
 const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
+    /** Set for email/password accounts; OAuth-linked accounts use a random hash. */
+    password: { type: String, required: false },
+    clerk_id: { type: String, sparse: true, unique: true },
     phone_number: { type: String },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
@@ -22,6 +24,8 @@ const userSchema = new mongoose.Schema(
     phone_verified: { type: Boolean, default: false },
     otp: { type: String },
     otp_expires: { type: Date },
+    reset_password_token: { type: String },
+    reset_password_expires: { type: Date },
     date_of_birth: { type: Date },
     gender: { type: String },
     allergies: { type: String },

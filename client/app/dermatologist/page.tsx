@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 
 interface PatientRef {
   _id?: string;
@@ -55,7 +56,7 @@ export default function DermatologistDashboard() {
       setIsLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:5000/api/dermatologist/schedule/today",
+          apiUrl("/dermatologist/schedule/today"),
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -86,7 +87,7 @@ export default function DermatologistDashboard() {
       setIsLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:5000/api/dermatologist/urgent-cases",
+          apiUrl("/dermatologist/urgent-cases"),
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -115,7 +116,7 @@ export default function DermatologistDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/dermatologist/appointment/${appointmentId}`,
+        apiUrl(`/dermatologist/appointment/${appointmentId}`),
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
@@ -139,7 +140,7 @@ export default function DermatologistDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/dermatologist/appointment/${selectedAppointment._id}/complete`,
+        apiUrl(`/dermatologist/appointment/${selectedAppointment._id}/complete`),
         {
           method: "PUT",
           headers: {
@@ -183,7 +184,7 @@ export default function DermatologistDashboard() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/dermatologist/prescription/issue",
+        apiUrl("/dermatologist/prescription/issue"),
         {
           method: "POST",
           headers: {
@@ -214,7 +215,7 @@ export default function DermatologistDashboard() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <section className="rounded-[2rem] border border-[#c56c4a]/25 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
+        <section className="rounded-sm border border-[#2a4540]/12 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
           <Link
             href="/dashboard"
             className="text-xs font-bold uppercase tracking-[0.22em] text-[#e4c9ba]"
@@ -236,7 +237,7 @@ export default function DermatologistDashboard() {
           </div>
         )}
 
-        <div className="mt-7 flex gap-2 rounded-2xl border border-[#c56c4a]/20 bg-[#fff9f2] p-2">
+        <div className="mt-7 flex gap-2 rounded-sm border border-[#2a4540]/10 bg-[#f8fcfb] p-2">
           <button
             onClick={() => setActiveTab("today")}
             className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider ${
@@ -261,7 +262,7 @@ export default function DermatologistDashboard() {
 
         {isLoading ? (
           <div className="mt-8 flex items-center justify-center py-10">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c56c4a]/30 border-t-[#2f4b45]" />
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#2a4540]/18 border-t-[#2f4b45]" />
           </div>
         ) : (
           <section className="mt-7 space-y-3">
@@ -272,7 +273,7 @@ export default function DermatologistDashboard() {
                 appointments.map((appointment) => (
                   <article
                     key={appointment._id}
-                    className="cursor-pointer rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                    className="cursor-pointer rounded-sm border border-[#2a4540]/10 bg-white p-5"
                     onClick={() => fetchPatientHistory(appointment._id)}
                   >
                     <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -306,7 +307,7 @@ export default function DermatologistDashboard() {
                 urgentCases.map((caseItem) => (
                   <article
                     key={caseItem._id}
-                    className="cursor-pointer rounded-2xl border border-red-300/40 bg-red-50/40 p-5"
+                    className="cursor-pointer rounded-sm border border-red-300/40 bg-red-50/40 p-5"
                     onClick={() => fetchPatientHistory(caseItem._id)}
                   >
                     <h3 className="text-lg font-semibold text-[#7d3428]">
@@ -338,7 +339,7 @@ export default function DermatologistDashboard() {
               </div>
 
               {patientHistory && (
-                <div className="mb-5 rounded-2xl border border-[#c56c4a]/20 bg-[#fff7ee] p-4 text-sm text-[#655951]">
+                <div className="mb-5 rounded-sm border border-[#2a4540]/10 bg-[#f0f7f5] p-4 text-sm text-[#655951]">
                   <p>
                     Previous appointments: {patientHistory.appointments.length}
                   </p>
@@ -372,7 +373,7 @@ export default function DermatologistDashboard() {
 
               <button
                 onClick={handleCompleteAppointment}
-                className="mt-3 w-full rounded-full bg-[#c56c4a] px-4 py-3 text-xs font-bold uppercase tracking-wider text-white"
+                className="mt-3 w-full rounded-sm bg-[#2a4540] px-4 py-3 text-xs font-bold uppercase tracking-wider text-white"
               >
                 Complete Appointment
               </button>
@@ -421,7 +422,7 @@ function PrescriptionForm({
       <div className="flex gap-2">
         <button
           onClick={() => onSubmit(medication, dosage, frequency)}
-          className="flex-1 rounded-full bg-[#2f4b45] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white"
+          className="flex-1 rounded-sm bg-[#2a4540] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[#1f3330]"
         >
           Add
         </button>
@@ -458,7 +459,7 @@ function Pill({
 
 function Empty({ text }: { text: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-[#c56c4a]/30 bg-[#fff7ee] p-10 text-center text-sm text-[#6d5f55]">
+    <div className="rounded-sm border border-dashed border-[#2a4540]/18 bg-[#f0f7f5] p-10 text-center text-sm text-[#6d5f55]">
       {text}
     </div>
   );

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motionFadeUp, staggerContainer } from "@/lib/tailwind-patterns";
+import { apiUrl } from "@/lib/api";
 import Link from "next/link";
 
 interface DashboardSummary {
@@ -70,12 +72,9 @@ export default function AdminDashboard() {
     const loadSummary = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/admin/summary",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const response = await fetch(apiUrl("/admin/summary"), {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch summary");
@@ -110,7 +109,7 @@ export default function AdminDashboard() {
       try {
         if (activeTab === "bookings") {
           const response = await fetch(
-            `http://localhost:5000/api/admin/bookings?page=${page}&limit=10`,
+            apiUrl(`/admin/bookings?page=${page}&limit=10`),
             { headers: { Authorization: `Bearer ${token}` } },
           );
 
@@ -124,7 +123,7 @@ export default function AdminDashboard() {
 
         if (activeTab === "payments") {
           const response = await fetch(
-            `http://localhost:5000/api/admin/payments?page=${page}&limit=10`,
+            apiUrl(`/admin/payments?page=${page}&limit=10`),
             { headers: { Authorization: `Bearer ${token}` } },
           );
 
@@ -138,7 +137,7 @@ export default function AdminDashboard() {
 
         if (activeTab === "sms") {
           const response = await fetch(
-            `http://localhost:5000/api/admin/sms-logs?page=${page}&limit=10`,
+            apiUrl(`/admin/sms-logs?page=${page}&limit=10`),
             { headers: { Authorization: `Bearer ${token}` } },
           );
 
@@ -170,7 +169,7 @@ export default function AdminDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/admin/bookings/${bookingId}/cancel`,
+        apiUrl(`/admin/bookings/${bookingId}/cancel`),
         {
           method: "PUT",
           headers: {
@@ -203,7 +202,9 @@ export default function AdminDashboard() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <section className="nsc-reveal rounded-[2rem] border border-[#c56c4a]/25 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
+        <section
+          className={`rounded-sm border border-[#2a4540]/12 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10 ${motionFadeUp}`}
+        >
           <Link
             href="/dashboard"
             className="text-xs font-bold uppercase tracking-[0.22em] text-[#e4c9ba]"
@@ -225,7 +226,7 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="mt-8 flex flex-wrap gap-2 rounded-2xl border border-[#c56c4a]/20 bg-[#fff9f2] p-2">
+        <div className="mt-8 flex flex-wrap gap-2 rounded-sm border border-[#2a4540]/10 bg-[#f8fcfb] p-2">
           {(
             ["overview", "bookings", "payments", "sms", "users"] as AdminTab[]
           ).map((tab) => (
@@ -247,7 +248,9 @@ export default function AdminDashboard() {
         </div>
 
         {activeTab === "overview" && (
-          <section className="nsc-stagger mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <section
+            className={`mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 ${staggerContainer}`}
+          >
             {isLoading ? (
               <LoadingBlock />
             ) : (
@@ -288,7 +291,7 @@ export default function AdminDashboard() {
               bookings.map((booking) => (
                 <article
                   key={booking._id}
-                  className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                  className="rounded-sm border border-[#2a4540]/10 bg-white p-5"
                 >
                   <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                     <div>
@@ -336,7 +339,7 @@ export default function AdminDashboard() {
               transactions.map((tx) => (
                 <article
                   key={tx._id}
-                  className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                  className="rounded-sm border border-[#2a4540]/10 bg-white p-5"
                 >
                   <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                     <div>
@@ -374,7 +377,7 @@ export default function AdminDashboard() {
               smsLogs.map((log) => (
                 <article
                   key={log._id}
-                  className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                  className="rounded-sm border border-[#2a4540]/10 bg-white p-5"
                 >
                   <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                     <div>
@@ -403,7 +406,7 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === "users" && (
-          <section className="mt-7 rounded-2xl border border-dashed border-[#c56c4a]/30 bg-[#fff7ee] p-8 text-sm text-[#6d5f55]">
+          <section className="mt-7 rounded-sm border border-dashed border-[#2a4540]/18 bg-[#f0f7f5] p-8 text-sm text-[#6d5f55]">
             User management controls can be plugged in here once backend
             endpoints are available.
           </section>
@@ -438,7 +441,7 @@ export default function AdminDashboard() {
 
 function Metric({ label, value }: { label: string; value: string | number }) {
   return (
-    <article className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-6">
+    <article className="rounded-sm border border-[#2a4540]/10 bg-white p-6">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#8b776a]">
         {label}
       </p>
@@ -470,7 +473,7 @@ function Badge({
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-[#c56c4a]/30 bg-[#fff7ee] p-10 text-center text-sm text-[#6d5f55]">
+    <div className="rounded-sm border border-dashed border-[#2a4540]/18 bg-[#f0f7f5] p-10 text-center text-sm text-[#6d5f55]">
       {text}
     </div>
   );
@@ -479,7 +482,7 @@ function EmptyState({ text }: { text: string }) {
 function LoadingBlock() {
   return (
     <div className="col-span-3 flex items-center justify-center py-10">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c56c4a]/30 border-t-[#2f4b45]" />
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#2a4540]/18 border-t-[#2f4b45]" />
     </div>
   );
 }

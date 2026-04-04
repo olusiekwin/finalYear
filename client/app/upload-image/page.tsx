@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { motionFadeUp, staggerContainer } from "@/lib/tailwind-patterns";
+import { apiUrl } from "@/lib/api";
 
 interface AnalysisResult {
   severityScore: number;
@@ -52,7 +54,7 @@ export default function UploadImagePage() {
       formData.append("image", fileInputRef.current.files[0]);
 
       const response = await fetch(
-        "http://localhost:5000/api/ai/analyze-image",
+        apiUrl("/ai/analyze-image"),
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +78,9 @@ export default function UploadImagePage() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        <section className="nsc-reveal mb-8 rounded-[2rem] border border-[#c56c4a]/25 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
+        <section
+          className={`mb-8 rounded-sm border border-[#2a4540]/12 bg-[#2a4540] p-8 text-white shadow-sm sm:p-10 ${motionFadeUp}`}
+        >
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#dbb8a8]">
             AI Triage
           </p>
@@ -95,8 +99,8 @@ export default function UploadImagePage() {
           </div>
         )}
 
-        <div className="nsc-stagger grid gap-6 md:grid-cols-2">
-          <section className="nsc-glass rounded-3xl p-8">
+        <div className={`grid gap-6 md:grid-cols-2 ${staggerContainer}`}>
+          <section className="rounded-sm border border-[#2a4540]/10 bg-white p-8 shadow-sm">
             <h2 className="font-display text-3xl font-semibold text-[#2b433d]">
               Upload Image
             </h2>
@@ -118,7 +122,7 @@ export default function UploadImagePage() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex h-72 w-full items-center justify-center rounded-2xl border-2 border-dashed border-[#c56c4a]/35 bg-[#fff6ed] text-sm font-semibold text-[#6f5d52]"
+                  className="flex h-72 w-full items-center justify-center rounded-sm border-2 border-dashed border-[#2a4540]/20 bg-[#f8fcfb] text-sm font-semibold text-[#5e5148]"
                 >
                   Click to select an image
                 </button>
@@ -136,21 +140,21 @@ export default function UploadImagePage() {
             <div className="mt-4 flex gap-3">
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex-1 rounded-full border border-[#2f4b45] px-5 py-3 text-sm font-bold uppercase tracking-wider text-[#2f4b45]"
+                className="flex-1 rounded-sm border border-[#2a4540]/25 px-5 py-3 text-sm font-semibold uppercase tracking-wider text-[#2a4540] transition hover:bg-[#f8fcfb]"
               >
                 Choose Image
               </button>
               <button
                 onClick={handleAnalyze}
                 disabled={isLoading || !preview}
-                className="flex-1 rounded-full bg-[#c56c4a] px-5 py-3 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-60"
+                className="flex-1 rounded-sm bg-[#2a4540] px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-[#1f3330] disabled:opacity-60"
               >
                 {isLoading ? "Analyzing..." : "Analyze"}
               </button>
             </div>
           </section>
 
-          <section className="rounded-3xl border border-[#c56c4a]/20 bg-[#fffdf8] p-8">
+          <section className="rounded-sm border border-[#2a4540]/10 bg-white p-8 shadow-sm">
             <h2 className="font-display text-3xl font-semibold text-[#2b433d]">
               Results
             </h2>
@@ -164,9 +168,9 @@ export default function UploadImagePage() {
                   <p className="mt-1 text-5xl font-extrabold text-[#2c433d]">
                     {analysis.severityScore}/10
                   </p>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#ead4c0]">
+                  <div className="mt-3 h-2 overflow-hidden rounded-sm bg-[#dce9e5]">
                     <div
-                      className="h-full bg-[#c56c4a]"
+                      className="h-full bg-[#356b5f]"
                       style={{
                         width: `${(analysis.severityScore / 10) * 100}%`,
                       }}
@@ -200,7 +204,7 @@ export default function UploadImagePage() {
                     {analysis.recommendations.map((recommendation) => (
                       <li
                         key={recommendation}
-                        className="rounded-xl border border-[#c56c4a]/20 bg-white px-3 py-2 text-sm text-[#665b53]"
+                        className="rounded-sm border border-slate-200 bg-[#fafcfb] px-3 py-2 text-sm text-[#5e5148]"
                       >
                         {recommendation}
                       </li>
@@ -209,7 +213,7 @@ export default function UploadImagePage() {
                 </div>
               </div>
             ) : (
-              <div className="mt-6 rounded-2xl border border-dashed border-[#c56c4a]/30 bg-[#fff5ea] p-8 text-center text-sm text-[#6a5d55]">
+              <div className="mt-6 rounded-sm border border-dashed border-[#2a4540]/18 bg-[#f8fcfb] p-8 text-center text-sm text-[#5e5148]">
                 Upload an image to view analysis results.
               </div>
             )}

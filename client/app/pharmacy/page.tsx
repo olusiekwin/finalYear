@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { apiUrl } from "@/lib/api";
 
 interface IssuedBy {
   first_name?: string;
@@ -55,7 +56,7 @@ export default function PharmacyPage() {
       try {
         if (tab === "prescriptions") {
           const response = await fetch(
-            "http://localhost:5000/api/pharmacy/my-prescriptions",
+            apiUrl("/pharmacy/my-prescriptions"),
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -71,7 +72,7 @@ export default function PharmacyPage() {
 
         if (tab === "orders") {
           const response = await fetch(
-            "http://localhost:5000/api/pharmacy/my-orders",
+            apiUrl("/pharmacy/my-orders"),
             {
               headers: { Authorization: `Bearer ${token}` },
             },
@@ -101,7 +102,7 @@ export default function PharmacyPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/pharmacy/my-orders",
+        apiUrl("/pharmacy/my-orders"),
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -132,7 +133,7 @@ export default function PharmacyPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/pharmacy/order/create",
+        apiUrl("/pharmacy/order/create"),
         {
           method: "POST",
           headers: {
@@ -170,7 +171,7 @@ export default function PharmacyPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/pharmacy/order/${orderId}/pay`,
+        apiUrl(`/pharmacy/order/${orderId}/pay`),
         {
           method: "POST",
           headers: {
@@ -196,7 +197,7 @@ export default function PharmacyPage() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <section className="rounded-[2rem] border border-[#c56c4a]/25 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
+        <section className="rounded-sm border border-[#2a4540]/12 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
           <Link
             href="/dashboard"
             className="text-xs font-bold uppercase tracking-[0.22em] text-[#e4c9ba]"
@@ -217,7 +218,7 @@ export default function PharmacyPage() {
           </div>
         )}
 
-        <div className="mt-7 flex gap-2 rounded-2xl border border-[#c56c4a]/20 bg-[#fff9f2] p-2">
+        <div className="mt-7 flex gap-2 rounded-sm border border-[#2a4540]/10 bg-[#f8fcfb] p-2">
           <button
             onClick={() => setTab("prescriptions")}
             className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider ${
@@ -240,7 +241,7 @@ export default function PharmacyPage() {
 
         {isLoading ? (
           <div className="mt-8 flex items-center justify-center py-10">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#c56c4a]/30 border-t-[#2f4b45]" />
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#2a4540]/18 border-t-[#2f4b45]" />
           </div>
         ) : (
           <section className="mt-7">
@@ -252,7 +253,7 @@ export default function PharmacyPage() {
                   {prescriptions.map((rx) => (
                     <article
                       key={rx._id}
-                      className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                      className="rounded-sm border border-[#2a4540]/10 bg-white p-5"
                     >
                       <h3 className="text-lg font-semibold text-[#2d423c]">
                         {rx.medication_name}
@@ -268,7 +269,7 @@ export default function PharmacyPage() {
                       </div>
                       <button
                         onClick={() => setSelectedPrescription(rx)}
-                        className="mt-4 rounded-full bg-[#c56c4a] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white"
+                        className="mt-4 rounded-sm bg-[#2a4540] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white"
                       >
                         Order Now
                       </button>
@@ -285,7 +286,7 @@ export default function PharmacyPage() {
                   {orders.map((order) => (
                     <article
                       key={order._id}
-                      className="rounded-2xl border border-[#c56c4a]/20 bg-[#fffdf8] p-5"
+                      className="rounded-sm border border-[#2a4540]/10 bg-white p-5"
                     >
                       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                         <div>
@@ -310,7 +311,7 @@ export default function PharmacyPage() {
                           {order.order_status === "received" && (
                             <button
                               onClick={() => handlePaymentOrder(order._id)}
-                              className="block rounded-full border border-[#2f4b45] px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2f4b45]"
+                              className="block rounded-sm border border-[#2a4540]/25 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2f4b45]"
                             >
                               Pay Now
                             </button>
@@ -373,7 +374,7 @@ export default function PharmacyPage() {
                   />
                 )}
 
-                <div className="rounded-xl bg-[#fff7ee] p-3 text-sm text-[#665b53]">
+                <div className="rounded-xl bg-[#f0f7f5] p-3 text-sm text-[#665b53]">
                   Total: KES {deliveryMethod === "delivery" ? 2000 : 1500}
                 </div>
               </div>
@@ -381,14 +382,14 @@ export default function PharmacyPage() {
               <div className="mt-6 flex gap-2">
                 <button
                   onClick={() => setSelectedPrescription(null)}
-                  className="flex-1 rounded-full border border-[#2f4b45] px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2f4b45]"
+                  className="flex-1 rounded-sm border border-[#2a4540]/25 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#2f4b45]"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCreateOrder}
                   disabled={isCreatingOrder}
-                  className="flex-1 rounded-full bg-[#c56c4a] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white disabled:opacity-60"
+                  className="flex-1 rounded-sm bg-[#2a4540] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white disabled:opacity-60"
                 >
                   {isCreatingOrder ? "Creating..." : "Create Order"}
                 </button>
@@ -403,7 +404,7 @@ export default function PharmacyPage() {
 
 function EmptyState({ text }: { text: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-[#c56c4a]/30 bg-[#fff7ee] p-10 text-center text-sm text-[#6d5f55]">
+    <div className="rounded-sm border border-dashed border-[#2a4540]/18 bg-[#f0f7f5] p-10 text-center text-sm text-[#6d5f55]">
       {text}
     </div>
   );
@@ -411,7 +412,7 @@ function EmptyState({ text }: { text: string }) {
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block rounded-full bg-[#f2dfcc] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#6d4f3f]">
+    <span className="inline-block rounded-sm bg-[#eef6f3] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#2a4540]">
       {children}
     </span>
   );

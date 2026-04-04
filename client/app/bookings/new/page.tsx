@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motionFadeUp } from "@/lib/tailwind-patterns";
+import { apiUrl } from "@/lib/api";
 
 export default function NewBookingPage() {
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function NewBookingPage() {
     try {
       const appointmentDateTime = `${formData.appointmentDate}T${formData.appointmentTime}:00`;
 
-      const response = await fetch("http://localhost:5000/api/bookings", {
+      const response = await fetch(apiUrl("/bookings"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,35 +71,39 @@ export default function NewBookingPage() {
   return (
     <div className="px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
-        <section className="nsc-reveal mb-8 rounded-[2rem] border border-[#c56c4a]/25 bg-gradient-to-r from-[#2f4b45] to-[#355a53] p-8 text-white sm:p-10">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#dbb8a8]">
-            Schedule Consultation
+        <section
+          className={`mb-8 rounded-sm border border-[#2a4540]/12 bg-[#2a4540] p-8 text-white shadow-sm sm:p-10 ${motionFadeUp}`}
+        >
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#b8d4cc]">
+            Schedule consultation
           </p>
-          <h1 className="mt-2 font-display text-5xl font-semibold">
-            Book An Appointment
+          <h1 className="mt-2 font-display text-4xl font-semibold sm:text-5xl">
+            Book an appointment
           </h1>
-          <p className="mt-3 max-w-2xl text-sm text-[#e9ddd4]">
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#dce9e5]">
             Choose your preferred date and time for dermatologist consultation.
             Clinic hours align with Nairobi Skin Centre availability.
           </p>
         </section>
 
-        <section className="nsc-reveal nsc-glass rounded-3xl p-8 sm:p-10">
+        <section
+          className={`rounded-sm border border-[#2a4540]/10 bg-white p-8 shadow-sm sm:p-10 ${motionFadeUp}`}
+        >
           {error && (
-            <div className="mb-5 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+            <div className="mb-5 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="rounded-2xl border border-[#c56c4a]/20 bg-[#fff6ed] p-4 text-sm text-[#5d524a]">
-              Mon-Fri: 8.00a.m - 5.00p.m, Saturday: 8.00a.m - 1.00p.m.
+            <div className="rounded-sm border border-[#2a4540]/10 bg-[#f8fcfb] p-4 text-sm text-[#5e5148]">
+              Mon–Fri: 8.00a.m – 5.00p.m, Saturday: 8.00a.m – 1.00p.m.
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-semibold text-[#354941]">
-                  Appointment Date
+                <label className="mb-2 block text-sm font-semibold text-[#1a2e2a]">
+                  Appointment date
                 </label>
                 <input
                   type="date"
@@ -105,13 +111,13 @@ export default function NewBookingPage() {
                   value={formData.appointmentDate}
                   onChange={handleChange}
                   min={today}
-                  className="w-full rounded-xl border border-[#c8b6a6] bg-white px-4 py-3 text-[#2d2a26] outline-none transition focus:border-[#2f4b45]"
+                  className="w-full rounded-sm border border-slate-200 bg-[#fafafa] px-4 py-3 text-[#1a2e2a] outline-none transition focus:border-[#2f4b45]/45 focus:ring-2 focus:ring-[#2f4b45]/12"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold text-[#354941]">
-                  Appointment Time
+                <label className="mb-2 block text-sm font-semibold text-[#1a2e2a]">
+                  Appointment time
                 </label>
                 <select
                   name="appointmentTime"
@@ -122,7 +128,7 @@ export default function NewBookingPage() {
                       appointmentTime: e.target.value,
                     })
                   }
-                  className="w-full rounded-xl border border-[#c8b6a6] bg-white px-4 py-3 text-[#2d2a26] outline-none transition focus:border-[#2f4b45]"
+                  className="w-full rounded-sm border border-slate-200 bg-[#fafafa] px-4 py-3 text-[#1a2e2a] outline-none transition focus:border-[#2f4b45]/45 focus:ring-2 focus:ring-[#2f4b45]/12"
                 >
                   {[
                     "09:00",
@@ -147,8 +153,8 @@ export default function NewBookingPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-semibold text-[#354941]">
-                Additional Notes (Optional)
+              <label className="mb-2 block text-sm font-semibold text-[#1a2e2a]">
+                Additional notes (optional)
               </label>
               <textarea
                 name="notes"
@@ -156,16 +162,16 @@ export default function NewBookingPage() {
                 onChange={handleChange}
                 placeholder="Any additional information for the dermatologist..."
                 rows={4}
-                className="w-full resize-none rounded-xl border border-[#c8b6a6] bg-white px-4 py-3 text-[#2d2a26] outline-none transition focus:border-[#2f4b45]"
+                className="w-full resize-none rounded-sm border border-slate-200 bg-[#fafafa] px-4 py-3 text-[#1a2e2a] outline-none transition focus:border-[#2f4b45]/45 focus:ring-2 focus:ring-[#2f4b45]/12"
               />
             </div>
 
-            <div className="rounded-2xl border border-[#c56c4a]/20 bg-white p-4 text-sm text-[#5f544d]">
+            <div className="rounded-sm border border-slate-200/90 bg-[#fafcfb] p-4 text-sm text-[#5e5148]">
               {formData.appointmentDate ? (
                 <p>
                   Booking:{" "}
                   {new Date(formData.appointmentDate).toLocaleDateString()} at{" "}
-                  {formData.appointmentTime} | Estimated fee: KES 500
+                  {formData.appointmentTime} · Estimated fee: KES 500
                 </p>
               ) : (
                 <p>Select date and time to preview booking summary.</p>
@@ -176,14 +182,14 @@ export default function NewBookingPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 rounded-full bg-[#c56c4a] px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#ad5d41] disabled:opacity-60"
+                className="flex-1 rounded-sm bg-[#2a4540] px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-[#1f3330] disabled:opacity-60"
               >
-                {isLoading ? "Booking..." : "Confirm Booking"}
+                {isLoading ? "Booking…" : "Confirm booking"}
               </button>
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="flex-1 rounded-full border border-[#2f4b45] px-6 py-3 text-sm font-bold uppercase tracking-wider text-[#2f4b45]"
+                className="flex-1 rounded-sm border border-[#2a4540]/25 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-[#2a4540] transition hover:bg-[#f8fcfb]"
               >
                 Cancel
               </button>

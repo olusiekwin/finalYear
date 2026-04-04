@@ -1,136 +1,27 @@
 @import "tailwindcss";
 
-:root {
-  --background: #f9f4ec;
-  --foreground: #28231d;
-  --brand-deep: #2f4b45;
-  --brand-ink: #2b332e;
-  --brand-accent: #c56c4a;
-  --brand-soft: #f2dfcc;
-  --brand-card: #fffcf7;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
+/* Tailwind v4 theme tokens + keyframes — no ad-hoc utility classes */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Manrope", "Segoe UI", sans-serif;
-  --font-mono: "Consolas", "Courier New", monospace;
-  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  /* Clinical cream + deep surgical teal (dermatology / hospital feel) */
+  --color-background: #f0f7f5;
+  --color-foreground: #1a2624;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), "Times New Roman", serif;
+  --font-mono: ui-monospace, "Consolas", monospace;
+
+  --animate-fade-up: fade-up 0.7s ease-out both;
+  --animate-float-soft: float-soft 5s ease-in-out infinite;
+  --animate-bg-drift: bg-drift 18s ease-in-out infinite alternate;
+  --animate-draw-path: draw-path 1.8s ease-out forwards;
+  --animate-pulse-soft: pulse-soft 2.6s ease-in-out infinite;
+  --animate-shimmer-text: shimmer-text 4.5s ease-in-out infinite;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Manrope", "Segoe UI", sans-serif;
-  position: relative;
-}
-
-::selection {
-  background: rgba(197, 108, 74, 0.25);
-  color: #2f2a25;
-}
-
-a,
-button,
-input,
-select,
-textarea {
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid rgba(47, 75, 69, 0.65);
-  outline-offset: 2px;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 90% 8%,
-      rgba(197, 108, 74, 0.18),
-      transparent 30%
-    ),
-    radial-gradient(circle at 12% 88%, rgba(47, 75, 69, 0.14), transparent 32%),
-    linear-gradient(180deg, #fdf8f2 0%, #f7f0e6 100%);
-}
-
-h1,
-h2,
-h3,
-.font-display {
-  font-family: "Cormorant Garamond", "Times New Roman", serif;
-  letter-spacing: 0.01em;
-}
-
-.nsc-glass {
-  background: rgba(255, 252, 247, 0.78);
-  border: 1px solid rgba(197, 108, 74, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.nsc-fade-up {
-  animation: nscFadeUp 0.7s ease-out both;
-}
-
-.nsc-reveal {
-  animation: nscFadeUp 0.7s ease-out both;
-}
-
-.nsc-float {
-  animation: nscFloat 5s ease-in-out infinite;
-}
-
-.nsc-stagger > * {
-  opacity: 0;
-  animation: nscFadeUp 0.65s ease-out both;
-}
-
-.nsc-stagger > :nth-child(1) {
-  animation-delay: 0.05s;
-}
-
-.nsc-stagger > :nth-child(2) {
-  animation-delay: 0.12s;
-}
-
-.nsc-stagger > :nth-child(3) {
-  animation-delay: 0.19s;
-}
-
-.nsc-stagger > :nth-child(4) {
-  animation-delay: 0.26s;
-}
-
-.nsc-stagger > :nth-child(5) {
-  animation-delay: 0.33s;
-}
-
-.nsc-stagger > :nth-child(6) {
-  animation-delay: 0.4s;
-}
-
-@keyframes nscFadeUp {
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(1rem);
   }
   to {
     opacity: 1;
@@ -138,23 +29,51 @@ h3,
   }
 }
 
-@keyframes nscFloat {
+@keyframes float-soft {
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
   50% {
     transform: translateY(-8px);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .nsc-fade-up,
-  .nsc-reveal,
-  .nsc-float,
-  .nsc-stagger > * {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+@keyframes bg-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes draw-path {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer-text {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
